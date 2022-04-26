@@ -2,11 +2,12 @@ import { Sprite } from 'three';
 import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
+import { PlayerBullet } from '../PlayerBullet';
 
-const KEY_UP = 38;
-const KEY_DOWN = 40;
-const KEY_LEFT = 37;
-const KEY_RIGHT = 39;
+const KEY_UP = 87; // W
+const KEY_DOWN = 83; // S
+const KEY_LEFT = 65; // A
+const KEY_RIGHT = 68; // D
 
 class Player extends Sprite {
     constructor(parent) {
@@ -19,27 +20,69 @@ class Player extends Sprite {
         this.position.set(0, 0, 0);
         this.scale.set(0.1, 0.1, 1);
 
-        this.speed = 0.05;
+        this.speed = 0.025;
 
         this.keyState = [];
 
+        this.parent = parent;
         parent.addToUpdateList(this);
 
         window.addEventListener("keydown", (evt) => this.handleKeyEvent(this, evt));
         window.addEventListener("keyup", (evt) => this.handleUpEvent(this, evt))
+        window.addEventListener("mousedown", (evt) => this.handleMouseDownEvent(this, evt) )
+        window.addEventListener("mouseup", (evt) => this.handleMouseUpEvent(this, evt) )
+        window.addEventListener("mousemove", (evt) => this.handleMouseMoveEvent(this, evt) )
+
+        this.shooting = false;
+        this.mouseLocationX;
+        this.mouseLocationY;
     }
 
     handleKeyEvent(player, event) {
-        if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
+        if (event.keyCode == KEY_UP || event.keyCode == KEY_DOWN || event.keyCode == KEY_LEFT || event.keyCode == KEY_RIGHT) {
             this.keyState[event.keyCode] = true;
             //console.log(this.keyState);
         }
     }
 
     handleUpEvent(player, event) {
-        if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
+        if (event.keyCode == KEY_UP || event.keyCode == KEY_DOWN || event.keyCode == KEY_LEFT || event.keyCode == KEY_RIGHT) {
             this.keyState[event.keyCode] = false;
             //console.log(this.keyState);
+        }
+    }
+
+    handleMouseDownEvent(player, event) {
+        this.shooting = true;
+        this.createBullet(player, event);
+    }
+
+    handleMouseUpEvent(player, event) {
+        this.shooting = false;
+        // Clear all timeouts
+        const highestId = window.setTimeout(() => {
+            for (let i = highestId; i >= 0; i--) {
+              window.clearInterval(i);
+            }
+          }, 0);
+    }
+
+    handleMouseMoveEvent(player, event) {
+        player.mouseLocationX = event.clientX;
+        player.mouseLocationY = event.clientY;
+    }
+
+    // Create a bullet at the player's current position
+    createBullet(player, event) {
+        var shootingSpeed = 100; // Bullet shot every X milliseconds
+        if (event.which == 1 && player.shooting == true) {
+            var sceneCoords = player.parent.convertMouseToSceneCoords(player.mouseLocationX, player.mouseLocationY);
+            var direction = sceneCoords.sub(player.position).normalize();
+
+            var playerBullet = new PlayerBullet(player.parent, player.position, direction);
+            player.parent.add(playerBullet);
+
+            setTimeout(player.createBullet, shootingSpeed, player, event);
         }
     }
 
