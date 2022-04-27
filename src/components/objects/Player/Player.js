@@ -77,8 +77,11 @@ class Player extends Sprite {
         var shootingSpeed = 100; // Bullet shot every X milliseconds
         if (event.which == 1 && player.shooting == true) {
             var sceneCoords = player.parent.convertMouseToSceneCoords(player.mouseLocationX, player.mouseLocationY);
+            if (Number.isNaN(sceneCoords.x)) {
+                setTimeout(player.createBullet, shootingSpeed, player, event);
+                return;
+            }
             var direction = sceneCoords.sub(player.position).normalize();
-
             var playerBullet = new PlayerBullet(player.parent, player.position, direction);
             player.parent.add(playerBullet);
 

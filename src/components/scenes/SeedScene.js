@@ -2,7 +2,7 @@ import * as Dat from 'dat.gui';
 import { Scene, Color } from 'three';
 import { Flower, Land } from 'objects';
 import { BasicLights } from 'lights';
-import { Player } from '../objects';
+import { Enemy, Player } from '../objects';
 import * as THREE from 'three'
 
 class SeedScene extends Scene {
@@ -25,6 +25,11 @@ class SeedScene extends Scene {
 
         const player = new Player(this);
         this.add(player);
+
+        // Figure out a way to dynamically generate enemies
+        var enemyPosition = new THREE.Vector3(0, 2, 0);
+        //const enemy = new Enemy(this, enemyPosition);
+        //this.add(enemy);
 
         // Add meshes to scene
         //const land = new Land();
