@@ -8,8 +8,10 @@ class EnemyBullet extends Sprite {
     constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base") {
         super();
 
+        // Needed earlier for hitbox calculation
         this.position.copy(enemy.position);
 
+        // Set texture, starting position, orientation, etc
         var map;
         var material;
 
@@ -19,7 +21,6 @@ class EnemyBullet extends Sprite {
         // (since traditionally hitboxes are smaller than they appear)
         // Therefore, since player has a radius parameter, we can calculate the bounding box from that 
         // Then we just check if it intersects the bullet's bounding box
-
         if (bulletType == "base") {
             map = new TextureLoader().load( 'https://blog.fastforwardlabs.com/images/2018/02/circle_aa-1518730700478.png' );
             material = new SpriteMaterial( { map: map } );
@@ -39,29 +40,27 @@ class EnemyBullet extends Sprite {
             this.scale.set(0.5, 0.5, 1);
             // CREATE A HITBOX
         }
-
         this.material = material;
         
-        // Vector for direction of bullet
-        this.direction = direction.clone();
-
         // Parameters
-        this.speed = speed;
-        this.angularSpeed = angularSpeed;
+        this.direction = direction.clone(); // Direction of bullet
+        this.speed = speed;                 // Speed of bullet
+        this.angularSpeed = angularSpeed;   // Angular Speed of bullet
         
         // Enemy is the source enemy of the bullet
         // It holds the "player" parameter for collision detection
         // For some reason I can't pass in the player parameter
         this.enemy = enemy;
 
-        this.startPosition = enemy.position.clone();
-
+        // Parameters for bullet lifetime
+        this.startPosition = enemy.position.clone(); // If bullet is too far from source, delete it
         this.lifetime = 0;
-        this.maxLifetime = 750;
-        this.maxDistance = 5; // Distance that the bullet covers before disappearing
+        this.maxLifetime = 750;                      // If bullet has been active for too long, delete it
+        this.maxDistance = 5;                        // Distance that the bullet covers before disappearing
         // Not entirely sure how the scale of the scene works
         // A function that defines it is better than magic numbers
 
+        // Parent (scene) interaction
         parent.addToUpdateList(this);
     }
 

@@ -13,22 +13,20 @@ class Player extends Sprite {
     constructor(parent) {
         super();
 
+        // Set Texture and starting position
         const map = new TextureLoader().load( 'https://blog.fastforwardlabs.com/images/2018/02/circle_aa-1518730700478.png' );
         const material = new SpriteMaterial( { map: map } );
-
         this.material = material;
         this.position.set(0, 0, 0);
         this.scale.set(0.1, 0.1, 1);
 
+        // Movement
         this.speed = 0.025;
-
+        window.addEventListener("keydown", (evt) => this.handleKeyEvent(this, evt));
+        window.addEventListener("keyup", (evt) => this.handleUpEvent(this, evt));
         this.keyState = [];
 
-        this.parent = parent;
-        parent.addToUpdateList(this);
-
-        window.addEventListener("keydown", (evt) => this.handleKeyEvent(this, evt));
-        window.addEventListener("keyup", (evt) => this.handleUpEvent(this, evt))
+        // Shooting
         window.addEventListener("mousedown", (evt) => this.handleMouseDownEvent(this, evt) )
         window.addEventListener("mouseup", (evt) => this.handleMouseUpEvent(this, evt) )
         window.addEventListener("mousemove", (evt) => this.handleMouseMoveEvent(this, evt) )
@@ -36,19 +34,23 @@ class Player extends Sprite {
         this.shooting = false;
         this.mouseLocationX;
         this.mouseLocationY;
+        this.timeOuts = []; // This contains timeOuts for bullet shooting
 
-        this.timeOuts = [];
+        // Parent (scene) interaction
+        this.parent = parent;
+        parent.addToUpdateList(this);
 
+        // Hitbox calculation
         this.radius = 0.05;
     }
 
+    // Movement
     handleKeyEvent(player, event) {
         if (event.keyCode == KEY_UP || event.keyCode == KEY_DOWN || event.keyCode == KEY_LEFT || event.keyCode == KEY_RIGHT) {
             this.keyState[event.keyCode] = true;
             //console.log(this.keyState);
         }
     }
-
     handleUpEvent(player, event) {
         if (event.keyCode == KEY_UP || event.keyCode == KEY_DOWN || event.keyCode == KEY_LEFT || event.keyCode == KEY_RIGHT) {
             this.keyState[event.keyCode] = false;
@@ -56,6 +58,7 @@ class Player extends Sprite {
         }
     }
 
+    // Shooting
     handleMouseDownEvent(player, event) {
         // Make sure the game isn't dead
         if (player.parent.active != false) {
@@ -63,7 +66,6 @@ class Player extends Sprite {
             this.createBullet(player, event);
         }
     }
-
     handleMouseUpEvent(player, event) {
         this.shooting = false;
         // Clear all timeouts
@@ -71,12 +73,10 @@ class Player extends Sprite {
             window.clearInterval(this.timeOuts[i]);
         }
     }
-
     handleMouseMoveEvent(player, event) {
         player.mouseLocationX = event.clientX;
         player.mouseLocationY = event.clientY;
     }
-
     // Create a bullet at the player's current position
     createBullet(player, event) {
         var shootingSpeed = 100; // Bullet shot every X milliseconds
@@ -111,6 +111,5 @@ class Player extends Sprite {
         }
     }
 }   
-
 
 export default Player;
