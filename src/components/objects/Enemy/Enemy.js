@@ -21,12 +21,25 @@ class Enemy extends Sprite {
 
         // We can have another object dedicated to shot patterns
         // This way each shot pattern of an enemy does not need a unique object
-        this.generate2();
+        this.lifetime = 0;
     }
 
     // Random movement for enemy?
     update() {
-    
+        // Use the update function instead of setinterval to create bullets
+        // Use lifetime as a timer
+        this.lifetime++;
+        // I don't know how frequently the update() function is called
+        // My guess is once per frame
+        var timer1 = 3;
+        if (this.lifetime % timer1 == 0) {
+            this.pattern2(this);
+        }
+
+        var timer2 = 150;
+        if (this.lifetime % timer2 == 0) {
+            this.pattern3(this);
+        }
     }
 
     // Function that creates bullets using the object dedicated to shot patterns
@@ -43,16 +56,30 @@ class Enemy extends Sprite {
             Math.sin(theta) * -1, Math.cos(theta), 0,
             0, 0, 1
         )
-        var timer = 50;
+        var timer = 500;
         setInterval(this.pattern1, timer, this, direction, rotation);
         setInterval(this.pattern1, timer, this, direction.clone().multiplyScalar(-1), rotation);
+    }
+
+    generate1() {
+        var timer = 1000;
+        setInterval(this.simple, timer, this);
+    }
+
+    simple(enemy) {
+        var direction = new THREE.Vector3(0, -1, 0);
+        var speed = 0.005;
+        var angularSpeed = 0;
+        var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction, speed, angularSpeed);
+        enemy.parent.add(enemyBullet);
     }
 
     pattern1(enemy, direction, rotation) {
         direction.applyMatrix3(rotation).normalize();
         var speed = 0.005;
         var angularSpeed = 0.001;
-        var enemyBullet = new EnemyBullet(enemy.parent, enemy.position, direction, speed, angularSpeed);
+
+        var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction, speed, angularSpeed);
         enemy.parent.add(enemyBullet);
     }
 
@@ -70,8 +97,8 @@ class Enemy extends Sprite {
         var angularSpeed = 0;
         var axis = new THREE.Vector3(0, 0, 1); // Z AXIS
         var angularOffset = 0.4;
-        var enemyBullet1 = new EnemyBullet(enemy.parent, enemy.position, direction, speed, angularSpeed);
-        var enemyBullet2 = new EnemyBullet(enemy.parent, enemy.position, 
+        var enemyBullet1 = new EnemyBullet(enemy.parent, enemy, direction, speed, angularSpeed);
+        var enemyBullet2 = new EnemyBullet(enemy.parent, enemy, 
             direction.clone().applyAxisAngle(axis, angularOffset).normalize(), speed, angularSpeed);
         /*var enemyBullet2 = new EnemyBullet(enemy.parent, enemy.position, 
             direction.clone().applyAxisAngle(axis, angularOffset * -1).normalize(), speed, angularSpeed);*/
@@ -88,7 +115,7 @@ class Enemy extends Sprite {
         var angularOffset = Math.PI/4;
 
         for (let i = 0; i < 8; i++) {
-            var enemyBullet = new EnemyBullet(enemy.parent, enemy.position, direction.clone().applyAxisAngle(axis, angularOffset * i), speed, angularSpeed, "arrow");
+            var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction.clone().applyAxisAngle(axis, angularOffset * i), speed, angularSpeed);
             enemy.parent.add(enemyBullet);
         }
     }

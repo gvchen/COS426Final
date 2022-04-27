@@ -39,6 +39,8 @@ class SeedScene extends Scene {
 
         // Populate GUI
         //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+
+        this.active = true;
     }
 
     addToUpdateList(object) {
@@ -49,6 +51,14 @@ class SeedScene extends Scene {
         this.remove(object);
         var index = this.state.updateList.indexOf(object);
         this.state.updateList.splice(index, 1);
+    }
+
+    // Call this when game over
+    // Remove all from Update List
+    removeAllFromUpdateList() {
+        this.state.updateList = [];
+        console.log("GAME OVER");
+        this.active = false;
     }
 
     convertMouseToSceneCoords(mouseLocationX, mouseLocationY) {

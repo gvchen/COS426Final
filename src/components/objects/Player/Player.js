@@ -38,6 +38,8 @@ class Player extends Sprite {
         this.mouseLocationY;
 
         this.timeOuts = [];
+
+        this.radius = 0.05;
     }
 
     handleKeyEvent(player, event) {
@@ -55,8 +57,11 @@ class Player extends Sprite {
     }
 
     handleMouseDownEvent(player, event) {
-        this.shooting = true;
-        this.createBullet(player, event);
+        // Make sure the game isn't dead
+        if (player.parent.active != false) {
+            this.shooting = true;
+            this.createBullet(player, event);
+        }
     }
 
     handleMouseUpEvent(player, event) {
@@ -75,7 +80,7 @@ class Player extends Sprite {
     // Create a bullet at the player's current position
     createBullet(player, event) {
         var shootingSpeed = 100; // Bullet shot every X milliseconds
-        if (event.which == 1 && player.shooting == true) {
+        if (event.which == 1 && player.shooting == true && player.parent.active == true) {
             var sceneCoords = player.parent.convertMouseToSceneCoords(player.mouseLocationX, player.mouseLocationY);
             if (Number.isNaN(sceneCoords.x)) {
                 setTimeout(player.createBullet, shootingSpeed, player, event);
