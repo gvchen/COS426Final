@@ -36,6 +36,8 @@ class Player extends Sprite {
         this.shooting = false;
         this.mouseLocationX;
         this.mouseLocationY;
+
+        this.timeOuts = [];
     }
 
     handleKeyEvent(player, event) {
@@ -60,11 +62,9 @@ class Player extends Sprite {
     handleMouseUpEvent(player, event) {
         this.shooting = false;
         // Clear all timeouts
-        const highestId = window.setTimeout(() => {
-            for (let i = highestId; i >= 0; i--) {
-              window.clearInterval(i);
-            }
-          }, 0);
+        for (let i = 0; i < this.timeOuts.length; i++) {
+            window.clearInterval(this.timeOuts[i]);
+        }
     }
 
     handleMouseMoveEvent(player, event) {
@@ -85,7 +85,8 @@ class Player extends Sprite {
             var playerBullet = new PlayerBullet(player.parent, player.position, direction);
             player.parent.add(playerBullet);
 
-            setTimeout(player.createBullet, shootingSpeed, player, event);
+            var timeoutId = setTimeout(player.createBullet, shootingSpeed, player, event);
+            player.timeOuts.push(timeoutId);
         }
     }
 

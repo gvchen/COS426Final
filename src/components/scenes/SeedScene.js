@@ -28,8 +28,8 @@ class SeedScene extends Scene {
 
         // Figure out a way to dynamically generate enemies
         var enemyPosition = new THREE.Vector3(0, 2, 0);
-        //const enemy = new Enemy(this, enemyPosition);
-        //this.add(enemy);
+        const enemy = new Enemy(this, player, enemyPosition);
+        this.add(enemy);
 
         // Add meshes to scene
         //const land = new Land();

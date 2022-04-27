@@ -15,7 +15,7 @@ class PlayerBullet extends Sprite {
         this.scale.set(0.05, 0.05, 1);
 
         // Vector for direction of bullet
-        this.direction = direction;
+        this.direction = direction.clone();
 
         // Parameters
         this.speed = 0.05;
