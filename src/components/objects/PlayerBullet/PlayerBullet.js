@@ -4,7 +4,7 @@ import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
 
 class PlayerBullet extends Sprite {
-    constructor(parent, playerPosition, direction) {
+    constructor(parent, playerPosition, direction, speed = 0.05) {
         super();
 
         // Set Texture and Starting Position
@@ -16,7 +16,7 @@ class PlayerBullet extends Sprite {
 
         // Parameters
         this.direction = direction.clone();          // Direction of bullet
-        this.speed = 0.05;                           // Movement Speed
+        this.speed = speed;                           // Movement Speed
         this.startPosition = playerPosition.clone(); // Position
         this.maxDistance = 5; // Distance that the bullet covers before disappearing
 

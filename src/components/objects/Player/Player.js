@@ -86,8 +86,10 @@ class Player extends Sprite {
                 setTimeout(player.createBullet, shootingSpeed, player, event);
                 return;
             }
+            var speed = 0.05;
             var direction = sceneCoords.sub(player.position).normalize();
-            var playerBullet = new PlayerBullet(player.parent, player.position, direction);
+
+            var playerBullet = new PlayerBullet(player.parent, player.position, direction, speed);
             player.parent.add(playerBullet);
 
             var timeoutId = setTimeout(player.createBullet, shootingSpeed, player, event);
@@ -95,19 +97,40 @@ class Player extends Sprite {
         }
     }
 
+    getPlayerDirection(){
+        var dir = new THREE.Vector3(0, 0, 0);
+        if (this.keyState[KEY_UP] == true) {
+            dir.add(new THREE.Vector3(0,  this.speed,  0));
+        }
+        if (this.keyState[KEY_DOWN] == true) {
+            dir.add(new THREE.Vector3(0,  -this.speed,  0));
+        }
+        if (this.keyState[KEY_LEFT] == true) {
+            dir.add(new THREE.Vector3(-this.speed,  0,  0));
+        }
+        if (this.keyState[KEY_RIGHT] == true) {
+            dir.add(new THREE.Vector3(this.speed,  0,  0));
+        }
+        return dir;
+    }
+
     update() {
         //console.log("HI");
         if (this.keyState[KEY_UP] == true) {
             this.position.add(new THREE.Vector3(0,  this.speed,  0));
+            //this.parent.camera.position.add(new THREE.Vector3(0,  this.speed,  0));
         }
         if (this.keyState[KEY_DOWN] == true) {
             this.position.add(new THREE.Vector3(0,  -this.speed,  0));
+            //this.parent.camera.position.add(new THREE.Vector3(0,  -this.speed,  0));
         }
         if (this.keyState[KEY_LEFT] == true) {
             this.position.add(new THREE.Vector3(-this.speed,  0,  0));
+            //this.parent.camera.position.add(new THREE.Vector3(-this.speed,  0,  0));
         }
         if (this.keyState[KEY_RIGHT] == true) {
             this.position.add(new THREE.Vector3(this.speed,  0,  0));
+            //this.parent.camera.position.add(new THREE.Vector3(this.speed,  0,  0));
         }
     }
 }   

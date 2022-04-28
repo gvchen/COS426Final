@@ -49,7 +49,7 @@ class Enemy extends Sprite {
         this.lifetime++;
         // I don't know how frequently the update() function is called
         // My guess is once per frame
-        var timer1 = 3;
+        /*var timer1 = 3;
         if (this.lifetime % timer1 == 0) {
             this.pattern2(this);
         }
@@ -57,6 +57,10 @@ class Enemy extends Sprite {
         var timer2 = 150;
         if (this.lifetime % timer2 == 0) {
             this.pattern3(this);
+        }*/
+        var timer3 = 5;
+        if (this.lifetime % timer3 == 0) {
+            this.pattern4(this);
         }
     }
 
@@ -103,7 +107,21 @@ class Enemy extends Sprite {
         var angularOffset = Math.PI/4;
 
         for (let i = 0; i < 8; i++) {
-            var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction.clone().applyAxisAngle(axis, angularOffset * i), speed, angularSpeed);
+            var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction.clone().applyAxisAngle(axis, angularOffset * i), speed, angularSpeed, "arrow");
+            enemy.parent.add(enemyBullet);
+        }
+    }
+
+    pattern4(enemy) {
+        var direction = enemy.player.position.clone().sub(enemy.position).normalize();
+        var speed = 0.07;
+        var angularSpeed = 0;
+
+        for (let i = 0; i < 3; i++) {
+            var xOffset = (Math.random() * - 0.5);
+            var yOffset = (Math.random() * - 0.5);
+            var offset = new THREE.Vector3(xOffset, yOffset, 0);
+            var enemyBullet = new EnemyBullet(enemy.parent, enemy, offset.add(direction).normalize(), speed, angularSpeed, "triangle");
             enemy.parent.add(enemyBullet);
         }
     }

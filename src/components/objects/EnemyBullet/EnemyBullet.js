@@ -2,7 +2,8 @@ import { Sprite } from 'three';
 import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
-import TEXTURE from './arrow.png';
+import ARROW from './arrow.png';
+import TRIANGLE from './triangle.png';
 
 class EnemyBullet extends Sprite {
     constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base") {
@@ -32,13 +33,29 @@ class EnemyBullet extends Sprite {
         if (bulletType == "arrow") {
             var loader = new THREE.TextureLoader();
             loader.setCrossOrigin('anonymous');
-            map = loader.load( TEXTURE );
+            map = loader.load( ARROW );
             map.center.set(.5, .5);
             var angle = new THREE.Vector2(direction.x, direction.y);
             map.rotation = angle.angle();
             material = new SpriteMaterial( { map: map } );
             this.scale.set(0.5, 0.5, 1);
-            // CREATE A HITBOX
+            // Set hitbox here
+            this.hitbox = new THREE.Box2(new THREE.Vector2(this.position.x - 0.015, this.position.y - 0.07), 
+                                         new THREE.Vector2(this.position.x + 0.015, this.position.y + 0.07))
+        }
+        if (bulletType == "triangle") {
+            var loader = new THREE.TextureLoader();
+            loader.setCrossOrigin('anonymous');
+            map = loader.load( TRIANGLE );
+            this.scale.set(0.25, 0.25, 1);
+            map.center.set(.5, .5);
+            var angle = new THREE.Vector2(direction.x, direction.y);
+            map.rotation = angle.angle() - Math.PI/2;
+            material = new SpriteMaterial( { map: map } );
+            
+            // Set hitbox here
+            this.hitbox = new THREE.Box2(new THREE.Vector2(this.position.x - 0.02, this.position.y - 0.18), 
+            new THREE.Vector2(this.position.x + 0.02, this.position.y + 0.18))
         }
         this.material = material;
         
