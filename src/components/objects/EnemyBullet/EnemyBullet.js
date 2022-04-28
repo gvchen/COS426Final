@@ -6,11 +6,14 @@ import ARROW from './arrow.png';
 import TRIANGLE from './triangle.png';
 
 class EnemyBullet extends Sprite {
-    constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base") {
+    constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base", position) {
         super();
 
         // Needed earlier for hitbox calculation
         this.position.copy(enemy.position);
+        if (position !== undefined) {
+            this.position.copy(position);
+        }
 
         // Set texture, starting position, orientation, etc
         var map;
@@ -54,8 +57,8 @@ class EnemyBullet extends Sprite {
             material = new SpriteMaterial( { map: map } );
             
             // Set hitbox here
-            this.hitbox = new THREE.Box2(new THREE.Vector2(this.position.x - 0.02, this.position.y - 0.18), 
-            new THREE.Vector2(this.position.x + 0.02, this.position.y + 0.18))
+            this.hitbox = new THREE.Box2(new THREE.Vector2(this.position.x - 0.015, this.position.y - 0.18), 
+            new THREE.Vector2(this.position.x + 0.015, this.position.y + 0.18))
         }
         this.material = material;
         
@@ -102,6 +105,8 @@ class EnemyBullet extends Sprite {
         // Collision Detection
         var playerBoundingBox = this.createBoundingBox(this.enemy.player.position, this.enemy.player.radius);
         if (playerBoundingBox.intersectsBox(this.hitbox)) {
+            console.log(this.hitbox);
+            console.log(playerBoundingBox);
             this.parent.removeAllFromUpdateList();
         }
     }
@@ -114,6 +119,10 @@ class EnemyBullet extends Sprite {
         var out = new THREE.Box2(min, max);
         return out;
     }
+
+    // New Collision Detection:
+    // Bounding box can be rotated for rectangular bullets fired at an angle
+    // Collisions must be able to account for that
 }
 
 export default EnemyBullet;

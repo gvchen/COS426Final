@@ -3,6 +3,7 @@ import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
 import { EnemyBullet } from '../EnemyBullet';
+import { EnemyPattern } from '../EnemyPattern';
 
 class Enemy extends Sprite {
     constructor(parent, player, position) {
@@ -32,11 +33,14 @@ class Enemy extends Sprite {
 
         // We can have another object dedicated to shot patterns
         // This way each shot pattern of an enemy does not need a unique object
+
+        this.pattern = new EnemyPattern(parent, this, Math.floor(Math.random()*7));
     }
 
     takeDamage(damage){
         this.health = this.health - damage;
         if (this.health <= 0) {
+            //console.log(this.patterns[0]);
             this.parent.removeFromUpdateList(this, "enemy");
         }
     }
@@ -44,24 +48,27 @@ class Enemy extends Sprite {
     // Use update in order to determine shooting intervals
     // Random movement for enemy?
     update() {
+        this.pattern.step();
+        /*
         // Use the update function instead of setinterval to create bullets
         // Use lifetime as a timer
         this.lifetime++;
         // I don't know how frequently the update() function is called
         // My guess is once per frame
-        /*var timer1 = 3;
+        var timer1 = 3;
         if (this.lifetime % timer1 == 0) {
-            this.pattern2(this);
+            this.patterns[2](this);
+            //this.pattern2(this);
         }
 
         var timer2 = 150;
         if (this.lifetime % timer2 == 0) {
             this.pattern3(this);
-        }*/
-        var timer3 = 5;
+        }
+        /*var timer3 = 5;
         if (this.lifetime % timer3 == 0) {
             this.pattern4(this);
-        }
+        }*/
     }
 
     // Patterns
@@ -130,7 +137,7 @@ class Enemy extends Sprite {
     // Function that creates bullets using the object dedicated to shot patterns
     // For testing purposes, Hard code patterns within the Enemy object, with a parameter that selects patterns
     // Preferably an object will be used in the future
-    generate() {
+    /*generate() {
         var direction = new THREE.Vector3(0, 1, 0);
         var theta = Math.PI/60;
         var rotation = new THREE.Matrix3();
@@ -156,7 +163,7 @@ class Enemy extends Sprite {
         setInterval(this.pattern2, timer1, this);
         var timer2 = 2500;
         setInterval(this.pattern3, timer2, this);
-    }
+    }*/
 }
 
 export default Enemy;

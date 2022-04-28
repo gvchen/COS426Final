@@ -9,6 +9,10 @@ const KEY_DOWN = 83; // S
 const KEY_LEFT = 65; // A
 const KEY_RIGHT = 68; // D
 
+const SHIFT_LEFT = 16; // SHIFT
+const NORMAL_SPEED = 0.025;
+const FOCUS_SPEED = 0.01;
+
 class Player extends Sprite {
     constructor(parent) {
         super();
@@ -21,7 +25,7 @@ class Player extends Sprite {
         this.scale.set(0.1, 0.1, 1);
 
         // Movement
-        this.speed = 0.025;
+        this.speed = NORMAL_SPEED;
         window.addEventListener("keydown", (evt) => this.handleKeyEvent(this, evt));
         window.addEventListener("keyup", (evt) => this.handleUpEvent(this, evt));
         this.keyState = [];
@@ -50,11 +54,17 @@ class Player extends Sprite {
             this.keyState[event.keyCode] = true;
             //console.log(this.keyState);
         }
+        if (event.keyCode == SHIFT_LEFT) {
+            this.speed = FOCUS_SPEED
+        }
     }
     handleUpEvent(player, event) {
         if (event.keyCode == KEY_UP || event.keyCode == KEY_DOWN || event.keyCode == KEY_LEFT || event.keyCode == KEY_RIGHT) {
             this.keyState[event.keyCode] = false;
             //console.log(this.keyState);
+        }
+        if (event.keyCode == SHIFT_LEFT) {
+            this.speed = NORMAL_SPEED;
         }
     }
 
@@ -97,7 +107,7 @@ class Player extends Sprite {
         }
     }
 
-    getPlayerDirection(){
+    /*getPlayerDirection(){
         var dir = new THREE.Vector3(0, 0, 0);
         if (this.keyState[KEY_UP] == true) {
             dir.add(new THREE.Vector3(0,  this.speed,  0));
@@ -112,7 +122,7 @@ class Player extends Sprite {
             dir.add(new THREE.Vector3(this.speed,  0,  0));
         }
         return dir;
-    }
+    }*/
 
     update() {
         //console.log("HI");
