@@ -83,6 +83,7 @@ class SeedScene extends Scene {
         this.state.updateEnemyList = [];
         this.state.updatePlayerBulletList = [];
         console.log("GAME OVER");
+        this.background = new Color(0xff0000);
         this.active = false;
     }
 
