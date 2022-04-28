@@ -3,7 +3,7 @@ import { Scene, Color } from 'three';
 import { Flower, Land } from 'objects';
 import { BasicLights } from 'lights';
 import { Enemy, Player } from '../objects';
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 class SeedScene extends Scene {
     constructor(camera) {
@@ -84,6 +84,19 @@ class SeedScene extends Scene {
         this.state.updatePlayerBulletList = [];
         console.log("GAME OVER");
         this.background = new Color(0xff0000);
+        const loader = new THREE.FontLoader();
+        var scene = this;
+        loader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
+            const textObj = new THREE.TextGeometry('GAME OVER', {
+                font: font,
+                size: 0.5,
+                height: 0.1,
+                bevelEnabled: false,
+            });
+            const material = new THREE.MeshBasicMaterial({color: 'black'});
+            const mesh = new THREE.Mesh(textObj, material);
+            scene.add(mesh);
+        });
         this.active = false;
     }
 
