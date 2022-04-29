@@ -14,6 +14,9 @@ class MainMenu {
         this.scene.background = new Color(0x7ec0ee);
         const loader = new THREE.FontLoader();
         var scene = this.scene;
+
+        var pos = this.camera.position.clone()
+
         loader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
             const textObj = new THREE.TextGeometry('PRESS SPACE TO BEGIN', {
                 font: font,
@@ -23,6 +26,14 @@ class MainMenu {
             });
             const material = new THREE.MeshBasicMaterial({color: 'black'});
             const mesh = new THREE.Mesh(textObj, material);
+
+            var bbox = new THREE.Box3().setFromObject(mesh);
+
+            var xLen = (bbox.max.x - bbox.min.x)/2;
+            var yLen = (bbox.max.y - bbox.min.y)/2;
+
+            mesh.position.set(pos.x -xLen, pos.y - yLen, 0);
+
             scene.add(mesh);
         });
 
@@ -30,6 +41,7 @@ class MainMenu {
 
     handleKeyEvent(evt) {
         if (evt.keyCode == KEY_SPACE) {
+            this.camera.position.set(0, 0, 10);
             this.scene = new SeedScene(this.camera);
         }
     }

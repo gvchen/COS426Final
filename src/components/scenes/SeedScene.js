@@ -86,6 +86,9 @@ class SeedScene extends Scene {
         this.background = new Color(0xff0000);
         const loader = new THREE.FontLoader();
         var scene = this;
+
+        var pos = this.camera.position.clone()
+
         loader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
             const textObj = new THREE.TextGeometry('GAME OVER', {
                 font: font,
@@ -95,7 +98,16 @@ class SeedScene extends Scene {
             });
             const material = new THREE.MeshBasicMaterial({color: 'black'});
             const mesh = new THREE.Mesh(textObj, material);
+
+            var bbox = new THREE.Box3().setFromObject(mesh);
+
+            var xLen = (bbox.max.x - bbox.min.x)/2;
+            var yLen = (bbox.max.y - bbox.min.y)/2;
+
+            mesh.position.set(pos.x -xLen, pos.y - yLen, 0);
+
             scene.add(mesh);
+            
         });
         this.active = false;
     }

@@ -32,9 +32,12 @@ class EnemyPattern {
 
     step(){
         this.lifetime = this.lifetime + 1;
-        this.patterns[this.patternNumber](this.enemy, this);
+        if (this.lifetime > 20) {
+            this.patterns[this.patternNumber](this.enemy, this);
+        }
     }
 
+    // Super simple, shoot straight down
     simple(enemy) {
         var direction = new THREE.Vector3(0, -1, 0);
         var speed = 0.005;
@@ -43,6 +46,7 @@ class EnemyPattern {
         enemy.parent.add(enemyBullet);
     }
 
+    // Easy, just a fixed spiral with lots of room
     pattern1(enemy, enemyPattern) {
         var timer = 5;
         if (enemyPattern.lifetime % timer == 0) {
@@ -66,6 +70,7 @@ class EnemyPattern {
         }
     }
 
+    // Easy, two aimed streams + 8 directional arrows
     pattern2(enemy, enemyPattern) {
         var timer1 = 3;
         if (enemyPattern.lifetime % timer1 == 0) {
@@ -100,6 +105,7 @@ class EnemyPattern {
         }
     }
 
+    // Easy - medium, Fast aimed triangle shots
     pattern3(enemy, enemyPattern) {
         var timer3 = 20;
         if (enemyPattern.lifetime % timer3 == 0) {
@@ -117,6 +123,8 @@ class EnemyPattern {
         }
     }
 
+    // Easy - medium Omnidirectional arrows
+    // Can be difficult to get into if out of position
     pattern4(enemy, enemyPattern) {
         var timer = 21;
         if (enemyPattern.lifetime % timer == 0) {
@@ -124,9 +132,10 @@ class EnemyPattern {
             var speed = 0.035;
             var angularSpeed = 0;
             var axis = new THREE.Vector3(0, 0, 1); // Z AXIS
-            var angularOffset = Math.PI/16;
+            var shots = 24;
+            var angularOffset = Math.PI/(shots/2);
     
-            for (let i = 0; i < 32; i++) {
+            for (let i = 0; i < shots; i++) {
                 var dir = direction.clone().applyAxisAngle(axis, angularOffset * i);
                 if (enemyPattern.lifetime % 2 == 0) {
                     dir.applyAxisAngle(axis, angularOffset / 2);

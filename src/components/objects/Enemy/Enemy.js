@@ -26,7 +26,7 @@ class Enemy extends Sprite {
 
         // Health parameter
         // This is probably better as an input for enemies with different health
-        this.health = 50;
+        this.health = 30;
 
         // Hitbox calculation
         this.radius = 0.15; // This along with this.scale() can also probably be dynamic

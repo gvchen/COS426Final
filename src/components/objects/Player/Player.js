@@ -13,6 +13,9 @@ const SHIFT_LEFT = 16; // SHIFT
 const NORMAL_SPEED = 0.025;
 const FOCUS_SPEED = 0.01;
 
+const KEY_ROTATE_LEFT = 81; // Q
+const KEY_ROTAtE_RIGHT = 69; // E
+
 class Player extends Sprite {
     constructor(parent) {
         super();
@@ -29,6 +32,10 @@ class Player extends Sprite {
         window.addEventListener("keydown", (evt) => this.handleKeyEvent(this, evt));
         window.addEventListener("keyup", (evt) => this.handleUpEvent(this, evt));
         this.keyState = [];
+
+        // Screen rotation
+        /*this.rotateLeft = false;
+        this.rotateRight = false;*/
 
         // Shooting
         window.addEventListener("mousedown", (evt) => this.handleMouseDownEvent(this, evt) )
@@ -57,6 +64,12 @@ class Player extends Sprite {
         if (event.keyCode == SHIFT_LEFT) {
             this.speed = FOCUS_SPEED
         }
+        /*if (event.keyCode == KEY_ROTATE_LEFT) {
+            this.rotateLeft = true;
+        }
+        if (event.keyCode == KEY_ROTAtE_RIGHT) {
+            this.rotateRight = true;
+        }*/
     }
     handleUpEvent(player, event) {
         if (event.keyCode == KEY_UP || event.keyCode == KEY_DOWN || event.keyCode == KEY_LEFT || event.keyCode == KEY_RIGHT) {
@@ -66,6 +79,12 @@ class Player extends Sprite {
         if (event.keyCode == SHIFT_LEFT) {
             this.speed = NORMAL_SPEED;
         }
+        /*if (event.keyCode == KEY_ROTATE_LEFT) {
+            this.rotateLeft = false;
+        }
+        if (event.keyCode == KEY_ROTAtE_RIGHT) {
+            this.rotateRight = false;
+        }*/
     }
 
     // Shooting
@@ -185,6 +204,14 @@ class Player extends Sprite {
             this.position.add(new THREE.Vector3(this.speed,  0,  0));
             this.parent.camera.position.add(new THREE.Vector3(this.speed,  0,  0));
         }
+
+        /*
+        if (this.rotateLeft == true) {
+            this.parent.camera.rotation.z += 0.01;
+        }
+        if (this.rotateRight == true) {
+            this.parent.camera.rotation.z -= 0.01;
+        }*/
     }
 }   
 
