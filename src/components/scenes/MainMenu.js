@@ -42,7 +42,9 @@ class MainMenu {
     handleKeyEvent(evt) {
         if (evt.keyCode == KEY_SPACE) {
             this.camera.position.set(0, 0, 10);
-            this.scene = new SeedScene(this.camera);
+            if (!this.scene.hasOwnProperty('active') || this.scene.active == false){
+                this.scene = new SeedScene(this.camera);
+            }
         }
     }
 }
