@@ -9,10 +9,12 @@
 import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
+import MainMenu from './components/scenes/MainMenu';
 
 // Initialize core ThreeJS components
 var camera = new PerspectiveCamera();
-const scene = new SeedScene(camera);
+var menu = new MainMenu(camera);
+var scene = menu.scene;
 //var camera = new PerspectiveCamera(40, 
 //    window.innerWidth / window.innerHeight, 10, 1000);
 const renderer = new WebGLRenderer({ antialias: true });
@@ -41,6 +43,7 @@ controls.update();*/
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
     //controls.update();
+    scene = menu.scene;
     renderer.render(scene, camera);
     scene.update && scene.update(timeStamp);
     window.requestAnimationFrame(onAnimationFrameHandler);
