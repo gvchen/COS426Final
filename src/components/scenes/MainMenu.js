@@ -12,6 +12,19 @@ class MainMenu {
         this.scene = new THREE.Scene();
         // Set background to a nice color
         this.scene.background = new Color(0x7ec0ee);
+        const loader = new THREE.FontLoader();
+        var scene = this.scene;
+        loader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
+            const textObj = new THREE.TextGeometry('PRESS SPACE TO BEGIN', {
+                font: font,
+                size: 0.2,
+                height: 0.1,
+                bevelEnabled: false,
+            });
+            const material = new THREE.MeshBasicMaterial({color: 'black'});
+            const mesh = new THREE.Mesh(textObj, material);
+            scene.add(mesh);
+        });
 
     }
 
