@@ -34,7 +34,7 @@ class Enemy extends Sprite {
         // We can have another object dedicated to shot patterns
         // This way each shot pattern of an enemy does not need a unique object
 
-        this.pattern = new EnemyPattern(parent, this, Math.floor(Math.random()*7));
+        this.pattern = new EnemyPattern(parent, this, Math.floor(Math.random()*6));
     }
 
     takeDamage(damage){

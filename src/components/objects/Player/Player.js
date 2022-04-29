@@ -91,13 +91,31 @@ class Player extends Sprite {
     createBullet(player, event) {
         var shootingSpeed = 100; // Bullet shot every X milliseconds
         if (event.which == 1 && player.shooting == true && player.parent.active == true) {
-            var sceneCoords = player.parent.convertMouseToSceneCoords(player.mouseLocationX, player.mouseLocationY);
+            //var sceneCoords = player.parent.convertMouseToSceneCoords(player.mouseLocationX, player.mouseLocationY);
+            /*if (Number.isNaN(sceneCoords.x)) {
+                setTimeout(player.createBullet, shootingSpeed, player, event);
+                return;
+            }*/
+            
+            // EXTREMELY JANK SOLUTION TO CAMERA CENTERING
+            // SPAGETTI ALERT
+            /*var sceneCoordsX = ( player.mouseLocationX / window.innerWidth ) * 2 - 1;
+            var sceneCoordsY = -( player.mouseLocationY / window.innerHeight ) * 2 + 1
+            var sceneCoords = new THREE.Vector3(sceneCoordsX, sceneCoordsY, 0.5);*/
+
+            var sceneCoords = player.convertMouseToSceneCoords(player.mouseLocationX, player.mouseLocationY);
+
             if (Number.isNaN(sceneCoords.x)) {
                 setTimeout(player.createBullet, shootingSpeed, player, event);
                 return;
             }
+
+            sceneCoords.add(player.position);
+            //sceneCoords.unproject(player.parent.camera);
+
             var speed = 0.05;
             var direction = sceneCoords.sub(player.position).normalize();
+            direction = sceneCoords.clone().normalize();
 
             var playerBullet = new PlayerBullet(player.parent, player.position, direction, speed);
             player.parent.add(playerBullet);
@@ -105,6 +123,31 @@ class Player extends Sprite {
             var timeoutId = setTimeout(player.createBullet, shootingSpeed, player, event);
             player.timeOuts.push(timeoutId);
         }
+    }
+
+    // RESULT OF SPAGETTI
+    convertMouseToSceneCoords(mouseLocationX, mouseLocationY) {
+        var vec = new THREE.Vector3(); // create once and reuse
+        var pos = new THREE.Vector3(); // create once and reuse
+
+        vec.set(
+            ( mouseLocationX / window.innerWidth ) * 2 - 1,
+            - ( mouseLocationY / window.innerHeight ) * 2 + 1,
+            0.5 );
+        
+        var tempCam = new THREE.PerspectiveCamera();
+        const { innerHeight, innerWidth } = window;
+        tempCam.aspect = innerWidth / innerHeight;
+        tempCam.updateProjectionMatrix();
+        tempCam.position.set(0, 0, 10);
+
+        vec.unproject(tempCam);
+        vec.sub(tempCam.position).normalize();
+        
+        var distance = - tempCam.position.z / vec.z;
+        
+        pos.copy(tempCam.position).add(vec.multiplyScalar(distance));
+        return pos;
     }
 
     /*getPlayerDirection(){
@@ -128,19 +171,19 @@ class Player extends Sprite {
         //console.log("HI");
         if (this.keyState[KEY_UP] == true) {
             this.position.add(new THREE.Vector3(0,  this.speed,  0));
-            //this.parent.camera.position.add(new THREE.Vector3(0,  this.speed,  0));
+            this.parent.camera.position.add(new THREE.Vector3(0,  this.speed,  0));
         }
         if (this.keyState[KEY_DOWN] == true) {
             this.position.add(new THREE.Vector3(0,  -this.speed,  0));
-            //this.parent.camera.position.add(new THREE.Vector3(0,  -this.speed,  0));
+            this.parent.camera.position.add(new THREE.Vector3(0,  -this.speed,  0));
         }
         if (this.keyState[KEY_LEFT] == true) {
             this.position.add(new THREE.Vector3(-this.speed,  0,  0));
-            //this.parent.camera.position.add(new THREE.Vector3(-this.speed,  0,  0));
+            this.parent.camera.position.add(new THREE.Vector3(-this.speed,  0,  0));
         }
         if (this.keyState[KEY_RIGHT] == true) {
             this.position.add(new THREE.Vector3(this.speed,  0,  0));
-            //this.parent.camera.position.add(new THREE.Vector3(this.speed,  0,  0));
+            this.parent.camera.position.add(new THREE.Vector3(this.speed,  0,  0));
         }
     }
 }   

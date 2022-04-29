@@ -13,13 +13,14 @@ class EnemyPattern {
         this.patternNumber = patternNumber;
 
         this.patterns = [
-            this.simple,
+            //this.simple,
             this.pattern1,
             this.pattern2,
             this.pattern3,
             this.pattern4,
             this.pattern5,
-            this.pattern6
+            this.pattern6,
+            //this.pattern7
         ];
 
         this.direction = new THREE.Vector3(0, 1, 0); // Used in pattern2
@@ -100,10 +101,10 @@ class EnemyPattern {
     }
 
     pattern3(enemy, enemyPattern) {
-        var timer3 = 5;
+        var timer3 = 20;
         if (enemyPattern.lifetime % timer3 == 0) {
             var direction = enemy.player.position.clone().sub(enemy.position).normalize();
-            var speed = 0.07;
+            var speed = 0.05;
             var angularSpeed = 0;
     
             for (let i = 0; i < 3; i++) {
@@ -178,6 +179,10 @@ class EnemyPattern {
                 }
             }
         }
+    }
+
+    pattern7(enemy, enemyPattern) {
+
     }
 }
 

@@ -115,12 +115,12 @@ class SeedScene extends Scene {
     convertMouseToSceneCoords(mouseLocationX, mouseLocationY) {
         var vec = new THREE.Vector3(); // create once and reuse
         var pos = new THREE.Vector3(); // create once and reuse
-        
+
         vec.set(
             ( mouseLocationX / window.innerWidth ) * 2 - 1,
             - ( mouseLocationY / window.innerHeight ) * 2 + 1,
             0.5 );
-        
+
         vec.unproject(this.camera);
         vec.sub(this.camera.position).normalize();
         
