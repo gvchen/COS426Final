@@ -23,22 +23,26 @@ class SeedScene extends Scene {
         };
 
         // Set background to a nice color
-        this.background = new Color(0x7ec0ee);
+        this.background = new Color(0x808080);
 
         const player = new Player(this);
         this.player = player;
         this.add(player);
 
-        // Figure out a way to dynamically generate enemies
-        var enemyPosition = new THREE.Vector3(0, 2, 0);
-        const enemy = new Enemy(this, player, enemyPosition);
-        this.add(enemy);
-
         // Dynamically Generate Enemies
         this.lifetime = 0;  // This lifetime is used to determine if no enemy has died for X amount of time
         this.spawnTimer = 0; // This timer is used to give a bit of time before enemies spawn
         this.randSpawnLimit = Math.random() * 60 + 60;
+        // Time it takes for an enemy to spawn assuming no kills
+        // Starts at 1000, but decreases upon enemy kill to increase difficulty
+        this.difficultyCounter = 1000;  
+        this.enemiesKilled = 0;
 
+        // Figure out a way to dynamically generate enemies
+        var enemyPosition = new THREE.Vector3(0, 2, 0);
+        const enemy = new Enemy(this, player, enemyPosition);
+        this.add(enemy);
+        
         // Add meshes to scene
         //const land = new Land();
         //const flower = new Flower(this);
@@ -83,7 +87,7 @@ class SeedScene extends Scene {
         this.state.updateEnemyList = [];
         this.state.updatePlayerBulletList = [];
         console.log("GAME OVER");
-        this.background = new Color(0xff0000);
+        this.background = new Color(0x808080);
         const loader = new THREE.FontLoader();
         var scene = this;
 
@@ -96,7 +100,7 @@ class SeedScene extends Scene {
                 height: 0.1,
                 bevelEnabled: false,
             });
-            const material = new THREE.MeshBasicMaterial({color: 'black'});
+            const material = new THREE.MeshBasicMaterial({color: 'white'});
             const mesh = new THREE.Mesh(textObj, material);
 
             var bbox = new THREE.Box3().setFromObject(mesh);
@@ -174,12 +178,16 @@ class SeedScene extends Scene {
 
             // Enemy Generation
             // Generate enemy if lifetime has been too long
-            if (this.lifetime > 1000) {
+            var timer = this.difficultyCounter - (50*this.enemiesKilled);
+            if (timer < 500) {
+                timer = 500;
+            }
+            if (this.lifetime > timer) {
                 this.createEnemy();
                 this.lifetime = 0;
             }
             this.lifetime++;
-            // Generate enemy based on spawn timer
+            // Generate enemy based on spawn timer so enemies don't immediately spawn
             if (updateEnemyList.length == 0) {
                 this.spawnTimer++;
             }
@@ -189,7 +197,29 @@ class SeedScene extends Scene {
                 this.lifetime = 0;
                 this.createEnemy();
             }
+
+            // Purge enemies that are too far away from the camera
+            // Rather than using an internal lifetime, it's basically the same if an enemy too far away just disappears
+            for (const enemy of updateEnemyList) {
+                if (this.checkInBounds(enemy.position) == false) {
+                    this.removeFromUpdateList(enemy, "enemy");
+                    console.log("despawn");
+                }
+            }
         }
+    }
+
+    // Check if an enemy is visible or not
+    checkInBounds(enemyPos) {
+        var leeway = 4;  // Determines how far off the screen the enemy can be before despawning
+        var min = this.convertMouseToSceneCoords(0, window.innerHeight);
+        var max = this.convertMouseToSceneCoords(window.innerWidth, 0);
+        if (enemyPos.x > (min.x - leeway) && enemyPos.x < (max.x + leeway)) {
+            if (enemyPos.y > (min.y - leeway) && enemyPos.y < (max.y + leeway)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Create a Box2 representing the bounding box of a circular entity with given radius and center

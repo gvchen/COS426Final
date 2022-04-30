@@ -20,7 +20,7 @@ class EnemyPattern {
             this.pattern4,
             this.pattern5,
             this.pattern6,
-            //this.pattern7
+            this.pattern7
         ];
 
         this.direction = new THREE.Vector3(0, 1, 0); // Used in pattern2
@@ -191,7 +191,38 @@ class EnemyPattern {
     }
 
     pattern7(enemy, enemyPattern) {
+        var direction = enemy.player.position.clone().sub(enemy.position).normalize();
+        var perpDir = new THREE.Vector3(direction.y, -direction.x, 0);
+        var speed = 0.035;
+        var angularSpeed = 0;
+        var timer = 15;
+        if (enemyPattern.lifetime % timer == 0) {
+            for (let j = -10; j <= -5; j++) {
+                var offset = new THREE.Vector3(j * perpDir.x * 0.2, j * perpDir.y * 0.2, 0);
+                var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction.clone(), 
+                        speed, angularSpeed, "base", enemy.position.clone().add(offset));
+                    enemy.parent.add(enemyBullet);
+            }
 
+            for (let j = 5; j <= 10; j++) {
+                var offset = new THREE.Vector3(j * perpDir.x * 0.2, j * perpDir.y * 0.2, 0);
+                var enemyBullet = new EnemyBullet(enemy.parent, enemy, direction.clone(), 
+                        speed, angularSpeed, "base", enemy.position.clone().add(offset));
+                    enemy.parent.add(enemyBullet);
+            }
+        }
+
+        var timer2 = 50;
+        if (enemyPattern.lifetime % timer2 == 0) { 
+            for (let j = -1; j <= 1; j++) {
+                var offset = new THREE.Vector3(j * perpDir.x * 0.3, j * perpDir.y * 0.3, 0);
+                direction = enemy.player.position.clone().sub(enemy.position.clone().add(offset)).normalize();
+                speed = 0.05;
+                enemyBullet = new EnemyBullet(enemy.parent, enemy, direction.clone(), 
+                        speed, angularSpeed, "triangle", enemy.position.clone().add(offset));
+                enemy.parent.add(enemyBullet);
+            }
+        }
     }
 }
 

@@ -4,13 +4,14 @@ import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
 import { EnemyBullet } from '../EnemyBullet';
 import { EnemyPattern } from '../EnemyPattern';
+import ENEMY from './enemy1.png';
 
 class Enemy extends Sprite {
     constructor(parent, player, position) {
         super();
 
         // Set Texture and starting position
-        const map = new TextureLoader().load( 'https://blog.fastforwardlabs.com/images/2018/02/circle_aa-1518730700478.png' );
+        const map = new TextureLoader().load( ENEMY );
         const material = new SpriteMaterial( { map: map } );
         this.material = material;
         this.position.copy(position);
@@ -34,13 +35,14 @@ class Enemy extends Sprite {
         // We can have another object dedicated to shot patterns
         // This way each shot pattern of an enemy does not need a unique object
 
-        this.pattern = new EnemyPattern(parent, this, Math.floor(Math.random()*6));
+        this.pattern = new EnemyPattern(parent, this, 6);
     }
 
     takeDamage(damage){
         this.health = this.health - damage;
         if (this.health <= 0) {
             //console.log(this.patterns[0]);
+            this.parent.enemiesKilled = this.parent.enemiesKilled + 1;
             this.parent.removeFromUpdateList(this, "enemy");
         }
     }

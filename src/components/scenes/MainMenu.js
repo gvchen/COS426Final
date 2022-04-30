@@ -11,7 +11,7 @@ class MainMenu {
         
         this.scene = new THREE.Scene();
         // Set background to a nice color
-        this.scene.background = new Color(0x7ec0ee);
+        this.scene.background = new Color(0x808080);
         const loader = new THREE.FontLoader();
         var scene = this.scene;
 
@@ -24,7 +24,7 @@ class MainMenu {
                 height: 0.1,
                 bevelEnabled: false,
             });
-            const material = new THREE.MeshBasicMaterial({color: 'black'});
+            const material = new THREE.MeshBasicMaterial({color: 'white'});
             const mesh = new THREE.Mesh(textObj, material);
 
             var bbox = new THREE.Box3().setFromObject(mesh);
@@ -41,8 +41,8 @@ class MainMenu {
 
     handleKeyEvent(evt) {
         if (evt.keyCode == KEY_SPACE) {
-            this.camera.position.set(0, 0, 10);
             if (!this.scene.hasOwnProperty('active') || this.scene.active == false){
+                this.camera.position.set(0, 0, 10);
                 this.scene = new SeedScene(this.camera);
             }
         }

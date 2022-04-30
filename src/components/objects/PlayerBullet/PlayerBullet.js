@@ -2,13 +2,15 @@ import { Sprite } from 'three';
 import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
+import PLAYER from './player1.png';
+
 
 class PlayerBullet extends Sprite {
     constructor(parent, playerPosition, direction, speed = 0.05) {
         super();
 
         // Set Texture and Starting Position
-        const map = new TextureLoader().load( 'https://blog.fastforwardlabs.com/images/2018/02/circle_aa-1518730700478.png' );
+        const map = new TextureLoader().load( PLAYER );
         const material = new SpriteMaterial( { map: map } );
         this.material = material;
         this.position.copy(playerPosition);

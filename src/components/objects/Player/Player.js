@@ -3,6 +3,7 @@ import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
 import { PlayerBullet } from '../PlayerBullet';
+import PLAYER from './player1.png';
 
 const KEY_UP = 87; // W
 const KEY_DOWN = 83; // S
@@ -21,7 +22,7 @@ class Player extends Sprite {
         super();
 
         // Set Texture and starting position
-        const map = new TextureLoader().load( 'https://blog.fastforwardlabs.com/images/2018/02/circle_aa-1518730700478.png' );
+        const map = new TextureLoader().load( PLAYER );
         const material = new SpriteMaterial( { map: map } );
         this.material = material;
         this.position.set(0, 0, 0);

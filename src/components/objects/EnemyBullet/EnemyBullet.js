@@ -2,8 +2,8 @@ import { Sprite } from 'three';
 import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
-import ARROW from './arrow.png';
-import TRIANGLE from './triangle.png';
+import ARROW from './arrow1.png';
+import TRIANGLE from './triangle11.png';
 
 class EnemyBullet extends Sprite {
     constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base", position) {
