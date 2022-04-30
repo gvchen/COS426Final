@@ -48,9 +48,7 @@ class SeedScene extends Scene {
             });
             const material = new THREE.MeshBasicMaterial({color: 'white'});
             const mesh = new THREE.Mesh(textObj, material);
-
-            var bbox = new THREE.Box3().setFromObject(mesh);
-
+            mesh.name = "score";
             mesh.position.set(pos.x + 6, pos.y + 4, 0);
 
             scene.add(mesh);
@@ -106,6 +104,8 @@ class SeedScene extends Scene {
             const textLoader = new THREE.FontLoader();
             var pos = this.camera.position.clone();
             var scene = this;
+            var scoreMesh = scene.getObjectByName("score");
+            this.remove(scoreMesh);
             textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
                 var text = 'SCORE: ' + scene.state.score;
                 const textObj = new THREE.TextGeometry(text, {
@@ -117,12 +117,7 @@ class SeedScene extends Scene {
                 const material = new THREE.MeshBasicMaterial({color: 'white'});
                 const mesh = new THREE.Mesh(textObj, material);
 
-                var bbox = new THREE.Box3().setFromObject(mesh);
-
-                //var xLen = (bbox.max.x - bbox.min.x);
-                var yLen = (bbox.max.y - bbox.min.y) + 0.1;
-
-                mesh.position.set(pos.x + 6, pos.y + 4 - yLen*scene.state.score, 0);
+                mesh.position.set(pos.x + 6, pos.y + 4, 0);
 
                 scene.add(mesh);
             });
