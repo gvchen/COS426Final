@@ -10,14 +10,19 @@ class MainMenu {
         window.addEventListener("keydown", (evt) => this.handleKeyEvent(evt) )
         
         this.scene = new THREE.Scene();
-        // Set background to a nice color
-        this.scene.background = new Color(0x808080);
-        const loader = new THREE.FontLoader();
+        // Set background
+        const loader = new THREE.TextureLoader();
+        var scene = this;
+        loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+        {
+            scene.background = texture;  
+        });
+        const textLoader = new THREE.FontLoader();
         var scene = this.scene;
 
         var pos = this.camera.position.clone()
 
-        loader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
+        textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
             const textObj = new THREE.TextGeometry('PRESS SPACE TO BEGIN', {
                 font: font,
                 size: 0.2,

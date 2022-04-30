@@ -22,8 +22,13 @@ class SeedScene extends Scene {
             updatePlayerBulletList: [],
         };
 
-        // Set background to a nice color
-        this.background = new Color(0x808080);
+        // Set background
+        const loader = new THREE.TextureLoader();
+        var scene = this;
+        loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+        {
+            scene.background = texture;  
+        });
 
         const player = new Player(this);
         this.player = player;
@@ -87,7 +92,7 @@ class SeedScene extends Scene {
         this.state.updateEnemyList = [];
         this.state.updatePlayerBulletList = [];
         console.log("GAME OVER");
-        this.background = new Color(0x808080);
+        //this.background = new Color(0x808080);
         const loader = new THREE.FontLoader();
         var scene = this;
 
@@ -175,6 +180,15 @@ class SeedScene extends Scene {
                     }
                 }
             }
+
+            // Animate Background
+            // const loader = new THREE.TextureLoader();
+            // var scene = this;
+            // loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
+            // {
+            //     texture.rotation = timeStamp / 500000;
+            //     scene.background = texture;  
+            // });
 
             // Enemy Generation
             // Generate enemy if lifetime has been too long
