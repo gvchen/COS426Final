@@ -6,7 +6,7 @@ import ARROW from './arrow1.png';
 import TRIANGLE from './triangle11.png';
 
 class EnemyBullet extends Sprite {
-    constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base", position) {
+    constructor(parent, enemy, direction, speed, angularSpeed, bulletType = "base", position, size = 1) {
         super();
 
         // Needed earlier for hitbox calculation
@@ -14,6 +14,7 @@ class EnemyBullet extends Sprite {
         if (position !== undefined) {
             this.position.copy(position);
         }
+        this.bulletType = bulletType;
 
         // Set texture, starting position, orientation, etc
         var map;
@@ -28,9 +29,9 @@ class EnemyBullet extends Sprite {
         if (bulletType == "base") {
             map = new TextureLoader().load( 'https://blog.fastforwardlabs.com/images/2018/02/circle_aa-1518730700478.png' );
             material = new SpriteMaterial( { map: map } );
-            this.scale.set(0.05, 0.05, 1);
+            this.scale.set(0.05 * size, 0.05 * size, 1);
             // Set hitbox here
-            var rad = 0.025;
+            var rad = 0.025 * size;
             this.hitbox = this.createBoundingBox(this.position, rad);
         }
         if (bulletType == "arrow") {
@@ -89,7 +90,10 @@ class EnemyBullet extends Sprite {
         var offset = this.direction.clone().multiplyScalar(this.speed);
         this.position.add(offset);
         var axis = new THREE.Vector3(0, 0, 1); // Z AXIS
-        this.direction.applyAxisAngle(axis, this.angularSpeed).normalize();
+        if (this.angularSpeed != 0) {  // Only apply this if the bullet is rotating
+            this.direction.applyAxisAngle(axis, this.angularSpeed).normalize();
+            //this.rotate();
+        }
         if (this.position.distanceToSquared(this.startPosition) > this.maxDistance * this.maxDistance) {
             // Call a remove function
             this.parent.removeFromUpdateList(this);
@@ -110,6 +114,14 @@ class EnemyBullet extends Sprite {
             this.parent.removeAllFromUpdateList();
         }
     }
+
+    /*rotate() {
+        if (this.bulletType == "triangle") {
+            var angle = new THREE.Vector2(this.direction.x, this.direction.y);
+            this.material.rotation = 0;
+            this.material.rotation = (angle.angle() - Math.PI/2);
+        }
+    }*/
 
     // Create a Box2 representing the bounding box of a circular entity with given radius and center
     createBoundingBox(center, rad) {

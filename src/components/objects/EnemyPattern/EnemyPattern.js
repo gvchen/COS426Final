@@ -20,14 +20,18 @@ class EnemyPattern {
             this.pattern4,
             this.pattern5,
             this.pattern6,
-            this.pattern7
+            this.pattern7,
+            this.pattern8,
+            this.pattern9,
+            this.pattern10
         ];
 
-        this.direction = new THREE.Vector3(0, 1, 0); // Used in pattern2
+        this.direction = new THREE.Vector3(0, 1, 0); // Used in pattern1
         this.pattern5Data = {
             offset: new THREE.Vector3(0, 0, 0),
             angularOffset: 0,
         };
+        this.bool = true;  // Used to switch directions in pattern 10
     }
 
     step(){
@@ -222,6 +226,112 @@ class EnemyPattern {
                         speed, angularSpeed, "triangle", enemy.position.clone().add(offset));
                 enemy.parent.add(enemyBullet);
             }
+        }
+    }
+
+    pattern8(enemy, enemyPattern) {
+        var timer = 60;
+        if (enemyPattern.lifetime % timer == 0) {
+            var direction = enemy.player.position.clone().sub(enemy.position).normalize();
+            var speed = 0.035;
+            var angularSpeed = 0;
+            var axis = new THREE.Vector3(0, 0, 1); // Z AXIS
+            var shots = 24;
+            var angularOffset = Math.PI/(shots/2);
+    
+            for (let i = 0; i < shots; i++) {
+                var dir = direction.clone().applyAxisAngle(axis, angularOffset * i);
+                if (enemyPattern.lifetime % 2 == 0) {
+                    dir.applyAxisAngle(axis, angularOffset / 2);
+                }
+                var enemyBullet = new EnemyBullet(enemy.parent, enemy, dir, speed, angularSpeed, "base", undefined, 6);
+                enemy.parent.add(enemyBullet);
+            }
+        }
+
+        var timer1 = 80;
+        if (enemyPattern.lifetime % timer1 == 30) {
+            enemyPattern.direction = enemy.player.position.clone().sub(enemy.position).normalize();
+        }
+
+        var perpDir = new THREE.Vector3(enemyPattern.direction.y, -enemyPattern.direction.x, 0);
+        var speed = 0.065;
+        var angularSpeed = 0;
+        if ([33, 36, 39, 42, 45, 48, 51, 54].includes(enemyPattern.lifetime % timer1)) {
+            for (let j = -4; j <= 4; j++) {
+                var offset = new THREE.Vector3(j * perpDir.x * 0.1, j * perpDir.y * 0.1, 0);
+                var enemyBullet = new EnemyBullet(enemy.parent, enemy, enemyPattern.direction.clone(), 
+                        speed, angularSpeed, "arrow", enemy.position.clone().add(offset));
+                    enemy.parent.add(enemyBullet);
+            }
+        }
+    }
+
+    // Spiral shots that alternate rotational direction
+    pattern9(enemy, enemyPattern) {
+        var timer = 15;
+        if (enemyPattern.lifetime % timer == 0) {
+            var bool = false;
+            if (enemyPattern.lifetime % 2 == 0) {
+                bool = true;
+            }
+            var theta = Math.PI/10;
+            var rotation = new THREE.Matrix3();
+            // Check matrix3 documentation 
+            // Can use apply axis rotationda
+            rotation.set(
+                Math.cos(theta), Math.sin(theta), 0,
+                Math.sin(theta) * -1, Math.cos(theta), 0,
+                0, 0, 1
+            )
+            enemyPattern.direction.applyMatrix3(rotation).normalize();
+            var speed = 0.05;
+            var angularSpeed = 0.02;
+
+            if (bool == true) {
+                angularSpeed = -0.02;
+            }
+
+            var axis = new THREE.Vector3(0, 0, 1); // Z AXIS
+            var shots = 6;
+            var angularOffset = Math.PI/(shots/2);
+        
+            for (let i = 0; i < shots; i++) {
+                var enemyBullet = new EnemyBullet(enemy.parent, enemy, enemyPattern.direction.clone().applyAxisAngle(axis, angularOffset * i), 
+                                                  speed, angularSpeed, "base", enemy.position.clone(), 3);
+                enemy.parent.add(enemyBullet);
+            }
+        }
+    }
+
+    pattern10(enemy, enemyPattern) {
+        var timer = 5;
+        if (enemyPattern.lifetime % timer == 0) {
+            //var direction = new THREE.Vector3(1, 0, 0);
+            var speed = 0.035;
+            var angularSpeed = 0;
+            var axis = new THREE.Vector3(0, 0, 1); // Z AXIS
+            var shots = 16;
+            var angularOffset = Math.PI/(shots/2);
+    
+            for (let i = 0; i < shots; i++) {
+                var dir = enemyPattern.direction.clone().applyAxisAngle(axis, angularOffset * i);
+                var enemyBullet = new EnemyBullet(enemy.parent, enemy, dir, speed, angularSpeed, "base");
+                enemy.parent.add(enemyBullet);
+            }
+            if (this.bool == true) {
+                enemyPattern.direction.applyAxisAngle(axis, 0.035);
+            } else {
+                enemyPattern.direction.applyAxisAngle(axis, -0.035);
+            }
+
+            if (enemyPattern.direction.x < -0.5) {
+                this.bool = false;
+            }
+            if (enemyPattern.direction.x > 0) {
+                this.bool = true;
+            }
+            
         }
     }
 }
