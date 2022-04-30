@@ -20,6 +20,7 @@ class SeedScene extends Scene {
             updateList: [],
             updateEnemyList: [],
             updatePlayerBulletList: [],
+            score: 0,
         };
 
         // Set background
@@ -33,6 +34,28 @@ class SeedScene extends Scene {
         const player = new Player(this);
         this.player = player;
         this.add(player);
+
+        //Display score
+        const textLoader = new THREE.FontLoader();
+        var pos = this.camera.position.clone();
+        textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
+            var text = 'SCORE: ' + scene.state.score;
+            const textObj = new THREE.TextGeometry(text, {
+                font: font,
+                size: 0.2,
+                height: 0.02,
+                bevelEnabled: false,
+            });
+            const material = new THREE.MeshBasicMaterial({color: 'white'});
+            const mesh = new THREE.Mesh(textObj, material);
+
+            var bbox = new THREE.Box3().setFromObject(mesh);
+
+            mesh.position.set(pos.x + 6, pos.y + 4, 0);
+
+            scene.add(mesh);
+            
+        });
 
         // Dynamically Generate Enemies
         this.lifetime = 0;  // This lifetime is used to determine if no enemy has died for X amount of time
@@ -78,6 +101,31 @@ class SeedScene extends Scene {
         if (type == "enemy") {
             var index1 = this.state.updateEnemyList.indexOf(object);
             this.state.updateEnemyList.splice(index1, 1);
+            this.state.score++;
+            //Update display score
+            const textLoader = new THREE.FontLoader();
+            var pos = this.camera.position.clone();
+            var scene = this;
+            textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
+                var text = 'SCORE: ' + scene.state.score;
+                const textObj = new THREE.TextGeometry(text, {
+                    font: font,
+                    size: 0.2,
+                    height: 0.02,
+                    bevelEnabled: false,
+                });
+                const material = new THREE.MeshBasicMaterial({color: 'white'});
+                const mesh = new THREE.Mesh(textObj, material);
+
+                var bbox = new THREE.Box3().setFromObject(mesh);
+
+                //var xLen = (bbox.max.x - bbox.min.x);
+                var yLen = (bbox.max.y - bbox.min.y) + 0.1;
+
+                mesh.position.set(pos.x + 6, pos.y + 4 - yLen*scene.state.score, 0);
+
+                scene.add(mesh);
+            });
         }
         else if (type == "playerBullet") {
             var index1 = this.state.updatePlayerBulletList.indexOf(object);
@@ -96,7 +144,7 @@ class SeedScene extends Scene {
         const loader = new THREE.FontLoader();
         var scene = this;
 
-        var pos = this.camera.position.clone()
+        var pos = this.camera.position.clone();
 
         loader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
             const textObj = new THREE.TextGeometry('GAME OVER', {
@@ -118,6 +166,7 @@ class SeedScene extends Scene {
             scene.add(mesh);
             
         });
+
         this.active = false;
     }
 
@@ -177,6 +226,7 @@ class SeedScene extends Scene {
                         this.removeFromUpdateList(playerBullet, "playerBullet");
                         console.log("contact");
                         enemy.takeDamage(playerBullet.damage);
+                        console.log(this.state.score);
                     }
                 }
             }
