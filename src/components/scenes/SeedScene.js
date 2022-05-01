@@ -268,9 +268,9 @@ class SeedScene extends Scene {
             
             // Update scoreboard
             var scoreMesh = this.getObjectByName("score");
-            if (scoreMesh != null){
+            /*if (scoreMesh != null){
                 scoreMesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
-            }
+            }*/
        
         }
     }
