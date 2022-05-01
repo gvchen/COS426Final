@@ -194,36 +194,39 @@ class Player extends Sprite {
             this.parent.camera.position.add(new THREE.Vector3(0,  this.speed,  0));
 
             var scoreMesh = this.parent.getObjectByName("score");
-            console.log(scoreMesh.position);
-            scoreMesh.position.add(new THREE.Vector3(0,  this.speed,  0));
-            console.log(scoreMesh.position);
+            if (scoreMesh !== undefined) {
+                scoreMesh.position.add(new THREE.Vector3(0,  this.speed,  0));
+            }
+
         }
         if (this.keyState[KEY_DOWN] == true) {
             this.position.add(new THREE.Vector3(0,  -this.speed,  0));
             this.parent.camera.position.add(new THREE.Vector3(0,  -this.speed,  0));
             
             var scoreMesh = this.parent.getObjectByName("score");
-            console.log(scoreMesh.position);
-            scoreMesh.position.add(new THREE.Vector3(0,  -this.speed,  0));
-            console.log(scoreMesh.position);
+            if (scoreMesh !== undefined) {
+                scoreMesh.position.add(new THREE.Vector3(0,  -this.speed,  0));
+            }
+
         }
         if (this.keyState[KEY_LEFT] == true) {
             this.position.add(new THREE.Vector3(-this.speed,  0,  0));
             this.parent.camera.position.add(new THREE.Vector3(-this.speed,  0,  0));
 
             var scoreMesh = this.parent.getObjectByName("score");
-            console.log(scoreMesh.position);
-            scoreMesh.position.add(new THREE.Vector3(-this.speed,  0,  0));
-            console.log(scoreMesh.position);
+            if (scoreMesh !== undefined) {
+                scoreMesh.position.add(new THREE.Vector3(-this.speed,  0,  0));
+            }
+
         }
         if (this.keyState[KEY_RIGHT] == true) {
             this.position.add(new THREE.Vector3(this.speed,  0,  0));
             this.parent.camera.position.add(new THREE.Vector3(this.speed,  0,  0));
 
             var scoreMesh = this.parent.getObjectByName("score");
-            console.log(scoreMesh.position);
-            scoreMesh.position.add(new THREE.Vector3(this.speed,  0,  0));
-            console.log(scoreMesh.position);
+            if (scoreMesh !== undefined) {
+                scoreMesh.position.add(new THREE.Vector3(this.speed,  0,  0));
+            }
         }
 
         /*

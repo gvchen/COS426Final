@@ -92,14 +92,17 @@ class SeedScene extends Scene {
         }
     }
 
-    removeFromUpdateList(object, type) {
+    removeFromUpdateList(object, type, despawn = false) {
         this.remove(object);
         var index = this.state.updateList.indexOf(object);
         this.state.updateList.splice(index, 1);
         if (type == "enemy") {
             var index1 = this.state.updateEnemyList.indexOf(object);
             this.state.updateEnemyList.splice(index1, 1);
-            this.state.score++;
+            if (despawn == false) {
+                this.state.score++;
+            }
+
             //Update display score
             const textLoader = new THREE.FontLoader();
             var scene = this;
@@ -260,7 +263,7 @@ class SeedScene extends Scene {
             // Rather than using an internal lifetime, it's basically the same if an enemy too far away just disappears
             for (const enemy of updateEnemyList) {
                 if (this.checkInBounds(enemy.position) == false) {
-                    this.removeFromUpdateList(enemy, "enemy");
+                    this.removeFromUpdateList(enemy, "enemy", true);
                     console.log("despawn");
                 }
             }
