@@ -37,7 +37,7 @@ class SeedScene extends Scene {
 
         //Display score
         const textLoader = new THREE.FontLoader();
-        var pos = this.camera.position.clone();
+        //var pos = this.player.position.clone();
         textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
             var text = 'SCORE: ' + scene.state.score;
             const textObj = new THREE.TextGeometry(text, {
@@ -49,7 +49,7 @@ class SeedScene extends Scene {
             const material = new THREE.MeshBasicMaterial({color: 'white'});
             const mesh = new THREE.Mesh(textObj, material);
             mesh.name = "score";
-            mesh.position.set(pos.x + 6, pos.y + 4, 0);
+            mesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
 
             scene.add(mesh);
             
@@ -102,7 +102,7 @@ class SeedScene extends Scene {
             this.state.score++;
             //Update display score
             const textLoader = new THREE.FontLoader();
-            var pos = this.camera.position.clone();
+            //var pos = this.player.position.clone();
             var scene = this;
             var scoreMesh = scene.getObjectByName("score");
             this.remove(scoreMesh);
@@ -116,9 +116,9 @@ class SeedScene extends Scene {
                 });
                 const material = new THREE.MeshBasicMaterial({color: 'white'});
                 const mesh = new THREE.Mesh(textObj, material);
-
-                mesh.position.set(pos.x + 6, pos.y + 4, 0);
                 mesh.name = "score";
+                mesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
+
                 scene.add(mesh);
             });
         }
@@ -265,6 +265,13 @@ class SeedScene extends Scene {
                     console.log("despawn");
                 }
             }
+            
+            // Update scoreboard
+            var scoreMesh = this.getObjectByName("score");
+            if (scoreMesh != null){
+                scoreMesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
+            }
+       
         }
     }
 
