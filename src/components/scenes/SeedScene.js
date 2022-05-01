@@ -118,7 +118,7 @@ class SeedScene extends Scene {
                 const mesh = new THREE.Mesh(textObj, material);
 
                 mesh.position.set(pos.x + 6, pos.y + 4, 0);
-
+                mesh.name = "score";
                 scene.add(mesh);
             });
         }
