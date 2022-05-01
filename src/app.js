@@ -10,7 +10,8 @@
  import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
  import { SeedScene } from 'scenes';
  import MainMenu from './components/scenes/MainMenu';
- 
+ import * as THREE from 'three';
+
  // Initialize core ThreeJS components
  var camera = new PerspectiveCamera();
  var menu = new MainMenu(camera);
@@ -30,7 +31,9 @@
  document.body.style.margin = 0; // Removes margin around page
  document.body.style.overflow = 'hidden'; // Fix scrolling
  document.body.appendChild(canvas);
- 
+
+
+
  // Set up controls
  // How do we prevent zoom in/out?
  /*const controls = new OrbitControls(camera, canvas);

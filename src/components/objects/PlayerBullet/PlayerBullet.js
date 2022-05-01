@@ -2,7 +2,7 @@ import { Sprite } from 'three';
 import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
-import PLAYER from './player1.png';
+import PLAYER from './player.png';
 
 
 class PlayerBullet extends Sprite {

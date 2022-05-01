@@ -3,7 +3,7 @@ import { TextureLoader } from 'three';
 import { SpriteMaterial } from 'three';
 import * as THREE from 'three'
 import { PlayerBullet } from '../PlayerBullet';
-import PLAYER from './player1.png';
+import PLAYER from './player.png';
 
 const KEY_UP = 87; // W
 const KEY_DOWN = 83; // S
@@ -26,7 +26,7 @@ class Player extends Sprite {
         const material = new SpriteMaterial( { map: map } );
         this.material = material;
         this.position.set(0, 0, 0);
-        this.scale.set(0.1, 0.1, 1);
+        this.scale.set(0.2, 0.2, 1);
 
         // Movement
         this.speed = NORMAL_SPEED;

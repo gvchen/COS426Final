@@ -1,6 +1,7 @@
 import { Scene, Color } from 'three';
 import * as THREE from 'three';
 import { SeedScene } from 'scenes';
+import Background from './background.png';
 
 const KEY_SPACE = 32; 
 
@@ -10,13 +11,8 @@ class MainMenu {
         window.addEventListener("keydown", (evt) => this.handleKeyEvent(evt) )
         
         this.scene = new THREE.Scene();
-        // Set background
-        const loader = new THREE.TextureLoader();
-        var scene = this;
-        loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
-        {
-            scene.background = texture;  
-        });
+        const map = new THREE.TextureLoader().load( Background );
+        this.scene.background = map;
         const textLoader = new THREE.FontLoader();
         var scene = this.scene;
 

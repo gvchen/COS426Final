@@ -4,7 +4,9 @@ import { Flower, Land } from 'objects';
 import { BasicLights } from 'lights';
 import { Enemy, Player } from '../objects';
 import * as THREE from 'three';
+import Background from './background.png';
 
+const SCORE_POS = window.innerWidth/window.innerHeight * 2;
 class SeedScene extends Scene {
     constructor(camera) {
         // Call parent Scene() constructor
@@ -24,12 +26,10 @@ class SeedScene extends Scene {
         };
 
         // Set background
-        const loader = new THREE.TextureLoader();
+        // const loader = new THREE.TextureLoader();
         var scene = this;
-        loader.load('https://images.pexels.com/photos/1205301/pexels-photo-1205301.jpeg' , function(texture)
-        {
-            scene.background = texture;  
-        });
+        const map = new THREE.TextureLoader().load( Background );
+        this.background = map;
 
         const player = new Player(this);
         this.player = player;
@@ -49,7 +49,7 @@ class SeedScene extends Scene {
             const material = new THREE.MeshBasicMaterial({color: 'white'});
             const mesh = new THREE.Mesh(textObj, material);
             mesh.name = "score";
-            mesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
+            mesh.position.set(SCORE_POS, SCORE_POS, 0);
 
             scene.add(mesh);
             
@@ -117,8 +117,7 @@ class SeedScene extends Scene {
                 const material = new THREE.MeshBasicMaterial({color: 'white'});
                 const mesh = new THREE.Mesh(textObj, material);
                 mesh.name = "score";
-                mesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
-
+                mesh.position.set(SCORE_POS, SCORE_POS, 0);
                 scene.add(mesh);
             });
         }
@@ -265,13 +264,6 @@ class SeedScene extends Scene {
                     console.log("despawn");
                 }
             }
-            
-            // Update scoreboard
-            var scoreMesh = this.getObjectByName("score");
-            /*if (scoreMesh != null){
-                scoreMesh.position.set(window.innerWidth/window.innerHeight, window.innerWidth/window.innerHeight, 0);
-            }*/
-       
         }
     }
 
