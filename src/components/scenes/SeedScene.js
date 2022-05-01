@@ -102,10 +102,10 @@ class SeedScene extends Scene {
             this.state.score++;
             //Update display score
             const textLoader = new THREE.FontLoader();
-            //var pos = this.player.position.clone();
             var scene = this;
             var scoreMesh = scene.getObjectByName("score");
             this.remove(scoreMesh);
+            var pos = this.camera.position.clone();
             textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
                 var text = 'SCORE: ' + scene.state.score;
                 const textObj = new THREE.TextGeometry(text, {
@@ -117,7 +117,7 @@ class SeedScene extends Scene {
                 const material = new THREE.MeshBasicMaterial({color: 'white'});
                 const mesh = new THREE.Mesh(textObj, material);
                 mesh.name = "score";
-                mesh.position.set(SCORE_POS, SCORE_POS, 0);
+                mesh.position.set(SCORE_POS+pos.x, SCORE_POS+pos.y, 0);
                 scene.add(mesh);
             });
         }
