@@ -1,19 +1,15 @@
 {
-  "name": "lower-case-dashed-name-of-project",
-  "repository": "REPOSITORY-NAME-AS-IT-APPEARS-IN-GITHUB-URL",
+  "homepage": "https://gvchen.github.io/COS426Final/",
+  "name": "2d-top-down-bullet-hell",
+  "repository": "COS426Final",
   "version": "0.1.0",
   "title": "PROJECT TITLE HERE",
-  "description": "SHORT DESCRIPTION OF PROJECT HERE. ONE TO TWO SENTENCES MAX",
+  "description": "A 2 dimensional top down bullet hell where the player shoots down enemies with various shot patterns",
   "keywords": [
     "Princeton",
     "graphics",
     "three.js",
-    "COS 426",
-    "ivy league",
-    "keyword1",
-    "keyword2",
-    "...",
-    "this last entry CANNOT have a comma after it ->"
+    "COS 426"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development --output-public-path \"\"",
