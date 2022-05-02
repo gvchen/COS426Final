@@ -39,7 +39,7 @@ class MainMenu {
         });
 
         textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
-            const textObj = new THREE.TextGeometry('Use arrow keys to move and left mouse button to fire', {
+            const textObj = new THREE.TextGeometry('Use WASD to move and left mouse button to fire', {
                 font: font,
                 size: 0.2,
                 height: 0.1,
