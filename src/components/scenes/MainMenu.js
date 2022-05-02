@@ -38,6 +38,26 @@ class MainMenu {
             scene.add(mesh);
         });
 
+        textLoader.load('https://components.ai/api/v1/typefaces/geostar/normal/400', function (font) {
+            const textObj = new THREE.TextGeometry('Use arrow keys to move and left mouse button to fire', {
+                font: font,
+                size: 0.2,
+                height: 0.1,
+                bevelEnabled: false,
+            });
+            const material = new THREE.MeshBasicMaterial({color: 'white'});
+            const mesh = new THREE.Mesh(textObj, material);
+
+            var bbox = new THREE.Box3().setFromObject(mesh);
+
+            var xLen = (bbox.max.x - bbox.min.x)/2;
+            var yLen = (bbox.max.y - bbox.min.y)/2;
+
+            mesh.position.set(pos.x -xLen, pos.y - yLen - 0.5, -5);
+
+            scene.add(mesh);
+        });
+
     }
 
     handleKeyEvent(evt) {
