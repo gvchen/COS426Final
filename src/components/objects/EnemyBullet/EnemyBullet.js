@@ -75,6 +75,9 @@ class EnemyBullet extends Sprite {
 
         // Parameters for bullet lifetime
         this.startPosition = enemy.position.clone(); // If bullet is too far from source, delete it
+        if (position !== undefined) {
+            this.startPosition = position.clone();
+        }
         this.lifetime = 0;
         this.maxLifetime = 750;                      // If bullet has been active for too long, delete it
         this.maxDistance = 5;                        // Distance that the bullet covers before disappearing
